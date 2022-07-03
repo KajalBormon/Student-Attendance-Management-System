@@ -1,3 +1,25 @@
+<?php
+    include '../connection.php';
+    if(isset($_POST['Register'])){
+        $sid = $_POST['sid'];
+        $fname = mysqli_real_escape_string($conn, $_POST['fname']);
+        $lname = mysqli_real_escape_string($conn, $_POST['lname']);
+        $dept = mysqli_real_escape_string($conn, $_POST['dept']);
+        $mail = mysqli_real_escape_string($conn, $_POST['mail']);
+        $batch =$_POST['batch'];
+        $sem = $_POST['sem'];
+
+        $sql = "INSERT INTO students(sid,fname,lname,dept,mail,batch,sem) VALUES({$sid},'{$fname}','{$lname}','{$dept}','{$mail}',{$batch},{$sem})";
+        if(mysqli_query($conn,$sql)){
+            $err = "<font color='green'>Add Student Successfully</font>"; 
+        }else{
+            $err = "<font color='red'>Invalid student information...!</font>";
+        }
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +66,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="logout"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
+                    <a class="nav-link" href="../logout"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
                 </li>
             </ul>
         </div>
@@ -56,7 +78,7 @@
     <div class=" mcontainer">
         <form name="register" method="post" class="myform" action="" enctype="multipart/form-data">
             <h1 class="tit mb-5">Add Student</h1>
-          
+            <p align='center'><b><?php echo @$err; ?></b></p> 
             <hr class="mhr" color="black" height="15px" />
             <table width="100%">
                 <tr>
@@ -107,7 +129,7 @@
 
                     </td>
                     <td class="td1">
-                        <input type="text" name="username" autocomplete="off" placeholder="Username" required />
+                        <input type="text" name="dept" autocomplete="off" placeholder="Department" required />
                     </td>
                 </tr>
 

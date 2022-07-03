@@ -1,3 +1,26 @@
+<?php
+    include '../connection.php';
+    if(isset($_POST['Register'])){
+        $fname = mysqli_real_escape_string($conn, $_POST['fname']);
+        $lname = mysqli_real_escape_string($conn, $_POST['lname']);
+        $dept = mysqli_real_escape_string($conn, $_POST['dept']);
+        $mail = mysqli_real_escape_string($conn, $_POST['mail']);
+        $batch = $_POST['batch'];
+        $sem = $_POST['sem'];
+        $course_name = mysqli_real_escape_string($conn, $_POST['course']);
+        $course_code = mysqli_real_escape_string($conn, $_POST['code']);
+
+        $sql = "INSERT INTO teacher(fname,lname,dept,mail,batch,sem,course_name,course_code) VALUES('{$fname}','{$lname}','{$dept}','{$mail}',{$batch},{$sem},'{$course_name}','{$course_code}')";
+        if(mysqli_query($conn,$sql)){
+            $err = "<font color='green'>Add Student Successfully</font>"; 
+        }else{
+            $err = "<font color='red'>Invalid student information...!</font>";
+        }
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,7 +66,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="logout"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
+                    <a class="nav-link" href="../logout"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
                 </li>
             </ul>
         </div>
@@ -54,22 +77,9 @@
     <div class=" mcontainer">
         <form name="register" method="post" class="myform" action="" enctype="multipart/form-data">
             <h1 class="tit mb-5">Add Teacher</h1>
-          
+            <p align='center'><b><?php echo @$err; ?></b></p> 
             <hr class="mhr" color="black" height="15px" />
             <table width="100%">
-                <tr>
-                    <td>
-                        <label class="label required">Student ID</label>
-                    </td>
-
-                    <td>
-
-                    </td>
-
-                    <td class="td1">
-                        <input type="number" autocomplete="off" name="sid" placeholder="Student ID" class="required" required />
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <label class="label required">First Name</label>
@@ -105,7 +115,7 @@
 
                     </td>
                     <td class="td1">
-                        <input type="text" name="username" autocomplete="off" placeholder="Username" required />
+                        <input type="text" name="dept" autocomplete="off" placeholder="Department" required />
                     </td>
                 </tr>
 
@@ -132,6 +142,17 @@
                         <input type="number" autocomplete="off" name="batch" id="phone" placeholder="Continue Batch" />
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <label>Semester</label>
+                    </td>
+                    <td>
+
+                    </td>
+                    <td class="td1">
+                        <input type="number" autocomplete="off" name="sem" id="phone" placeholder="Semester" />
+                    </td>
+                </tr>
 
                 <tr>
                     <td>
@@ -152,7 +173,7 @@
 
                     </td>
                     <td class="td1" class="label required">
-                        <input type="text" name="course" id="course" placeholder="Course Code" required />
+                        <input type="text" name="code" id="course" placeholder="Course Code" required />
                     </td>
                 </tr>
  

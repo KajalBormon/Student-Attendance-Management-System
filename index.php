@@ -1,5 +1,35 @@
 <?php
-    include "connection.php";
+    include 'connection.php';
+    session_start();    
+    if(isset($_POST['Login'])){
+        $username = mysqli_real_escape_string($conn,$_POST['username']);
+        $pass = md5($_POST['Password']);
+        $type = mysqli_real_escape_string($conn, $_POST['type']);
+
+        if($username == "" || $pass == ""){
+            $err = "<font color='red' align='center'>Enter a Valid Username & Password</font>";
+        }else{
+            $sql = "SELECT * FROM admin WHERE username = '{$username}' AND password = '{$pass}' AND type='{$type}'";
+            $query = mysqli_query($conn,$sql);
+            $result = mysqli_num_rows($query);
+            if($result>0 && $type=='student'){
+                $_SESSION['username'] = $_POST['username'];
+                header("location:{$host}/student/");
+            }
+            else if($result>0 && $type=='teacher'){
+                $_SESSION['username'] = $_POST['username'];
+                header("location:{$host}/teacher/");
+            }
+            else if($result>0 && $type=='admin'){
+                $_SESSION['username'] = $_POST['username'];
+                header("location:{$host}/admin/");
+            }
+            else{
+                $err = "<font color='red'>Username, Password or Role is Wrong try again...!</font>";
+            }
+
+        }
+    }
 
 ?>
 
@@ -62,6 +92,7 @@
             </div>
             <div class="card-body">
                 <form action="" method="post">
+                <p align='center'><b><?php echo @$err; ?></b></p>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>

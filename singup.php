@@ -11,7 +11,7 @@
 
         $query = "SELECT * FROM admin WHERE username='{$username}'";
         $result = mysqli_query($conn,$query);
-        if(mysqli_fetch_assoc($result)>0){
+        if(mysqli_num_rows($result)>0){
             $err = "<font color='red'>Username Already Exists..!</font>";
         }else{
             $signup_insert = "INSERT INTO admin(fname,lname,username,email,phone,password,type) VALUES('{$fname}','{$lname}','{$username}','{$email}','{$phone}','{$pass}','{$type}')";
