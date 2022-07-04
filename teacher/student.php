@@ -33,17 +33,20 @@
                     <span class="sr-only">(current)</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="teacher.php"><i class="fa fa-industry"></i> Faculties</a>
+                    <a class="nav-link" href="addteacher.php"><i class="fa fa-plus"></i> Add Info</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="teacher.php"><i class="fa fa-user"></i> My Report</a>
                 </li>
                 
                 <li class="nav-item">
                     <a class="nav-link" href="attendance.php"><i class="fa fa-check"></i> Attendance</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="report.php"><i class="fa fa-file"></i> Report</a>
+                    <a class="nav-link" href="report.php"><i class="fa fa-file"></i> Student Report</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
+                    <a class="nav-link" href="../logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
                 </li>
             </ul>
         </div>

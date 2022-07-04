@@ -1,30 +1,26 @@
 <?php
-    include "../connection.php";
+    include '../connection.php';
     if(isset($_POST['Register'])){
-        $fname = mysqli_real_escape_string($conn,$_POST['fname']);
-        $lname = mysqli_real_escape_string($conn,$_POST['lname']);
-        $username = mysqli_real_escape_string($conn,$_POST['username']);
-        $email = mysqli_real_escape_string($conn,$_POST['mail']);
-        $phone = mysqli_real_escape_string($conn,$_POST['phone']);
-        $pass = md5($_POST['psswd2']);
-        $type = mysqli_real_escape_string($conn, $_POST['type']);
+        $fname = mysqli_real_escape_string($conn, $_POST['fname']);
+        $lname = mysqli_real_escape_string($conn, $_POST['lname']);
+        $username = mysqli_real_escape_string($conn, $_POST['username']);
+        $dept = mysqli_real_escape_string($conn, $_POST['dept']);
+        $mail = mysqli_real_escape_string($conn, $_POST['mail']);
+        $batch = $_POST['batch'];
+        $sem = $_POST['sem'];
+        $course_name = mysqli_real_escape_string($conn, $_POST['course']);
+        $course_code = mysqli_real_escape_string($conn, $_POST['code']);
 
-        $query = "SELECT * FROM admin WHERE username='{$username}'";
-        $result = mysqli_query($conn,$query);
-        if(mysqli_num_rows($result)>0){
-            $err = "<font color='red'>Username Already Exists..!</font>";
+        $sql = "INSERT INTO teacher(fname,lname,username,dept,mail,batch,sem,course_name,course_code) VALUES('{$fname}','{$lname}','{$username}','{$dept}','{$mail}',{$batch},{$sem},'{$course_name}','{$course_code}')";
+        if(mysqli_query($conn,$sql)){
+            $err = "<font color='green'>Add Teacher Successfully</font>"; 
         }else{
-            $signup_insert = "INSERT INTO admin(fname,lname,username,email,phone,password,type) VALUES('{$fname}','{$lname}','{$username}','{$email}','{$phone}','{$pass}','{$type}')";
-
-            $signup_query = mysqli_query($conn, $signup_insert) or die("Error: ".mysqli_error($conn));
-
-            if($signup_query){
-                $err = "<font color='green'>SingUp successfully...!!</font>";
-            }
-        } 
+            $err = "<font color='red'>Invalid Teacher information...!</font>";
+        }
     }
 
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -61,27 +57,29 @@
         </button>
         <div class="collapse navbar-collapse mnav" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="student.php"><i class="fa fa-users"></i> Students</a>
+                    <span class="sr-only">(current)</span>
+                </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="singup.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Create Users</a>
+                    <a class="nav-link" href="Index.php"><i class="fa fa-home"></i> Home</a>
                     <span class="sr-only">(current)</span>
                 </li>
-            
+
                 <li class="nav-item">
-                    <a class="nav-link" href="addteacher.php"><i class="fa fa-plus"></i> Add Teacher</a>
+                    <a class="nav-link" href="addteacher.php"><i class="fa fa-plus"></i> Add Info</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="addstudent.php"><i class="fa fa-plus"></i> Add Student</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="teacherlist.php"><i class="fa fa-users"></i> Teacher List</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="studentlist.php"><i class="fa fa-users"></i> Student List</a>
+                    <a class="nav-link" href="teacher.php"><i class="fa fa-user"></i> My Report</a>
                 </li>
                 
+                <li class="nav-item">
+                    <a class="nav-link" href="attendance.php"><i class="fa fa-check"></i> Attendance</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="report.php"><i class="fa fa-file"></i> Student Report</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
                 </li>
@@ -91,10 +89,10 @@
 </nav>
 
 <div class="container">
-<div class=" mcontainer">
+    <div class=" mcontainer">
         <form name="register" method="post" class="myform" action="" enctype="multipart/form-data">
-            <h1 class="tit mb-5">Sign Up</h1>
-            <?php echo @$err; ?>
+            <h1 class="tit mb-5">Add Teacher</h1>
+            <p align='center'><b><?php echo @$err; ?></b></p> 
             <hr class="mhr" color="black" height="15px" />
             <table width="100%">
                 <tr>
@@ -124,15 +122,30 @@
                         <input type="text" name="lname" autocomplete="off" placeholder="Last Name" required />
                     </td>
                 </tr>
+
                 <tr>
                     <td>
-                        <label class="label required">Username</label>
+                        <label class="label required">username</label>
+                    </td>
+
+                    <td>
+
+                    </td>
+
+                    <td class="td1">
+                        <input type="text" name="username" autocomplete="off" placeholder="Username" required />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label class="label required">Department</label>
                     </td>
                     <td>
 
                     </td>
                     <td class="td1">
-                        <input type="text" name="username" autocomplete="off" placeholder="Username" required />
+                        <input type="text" name="dept" autocomplete="off" placeholder="Department" required />
                     </td>
                 </tr>
 
@@ -144,67 +157,59 @@
 
                     </td>
                     <td class="td1">
-                        <input type="email" name="mail" autocomplete="off" placeholder="student.csejkkniu@gmail.com" required />
+                        <input type="email" name="mail" autocomplete="off" placeholder="csejkkniu@gmail.com" required />
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <label>Phone</label>
+                        <label>Batch</label>
                     </td>
                     <td>
 
                     </td>
                     <td class="td1">
-                        <input type="phone" autocomplete="off" name="phone" id="phone" placeholder="01700112233" />
+                        <input type="number" autocomplete="off" name="batch" id="phone" placeholder="Continue Batch" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Semester</label>
+                    </td>
+                    <td>
+
+                    </td>
+                    <td class="td1">
+                        <input type="number" autocomplete="off" name="sem" id="phone" placeholder="Semester" />
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <label class="label required">Password</label>
+                        <label class="label required">Course Name</label>
                     </td>
                     <td>
 
                     </td>
                     <td class="td1" class="label required">
-                        <input type="password" name="psswd" id="pass1" placeholder="Password" required />
+                        <input type="text" name="course" id="course" placeholder="Course Name" required />
                     </td>
                 </tr>
-
                 <tr>
                     <td>
-                        <label class="label required">Confirm Password</label>
+                        <label class="label required">Course Code</label>
                     </td>
                     <td>
 
                     </td>
                     <td class="td1" class="label required">
-                        <input type="password" name="psswd2" id="pass2" placeholder="Confirm Password" required />
-                        <span id="mgs" style="color: red;"></span>
+                        <input type="text" name="code" id="course" placeholder="Course Code" required />
                     </td>
-                </tr>
-                <tr class="rolefont">
-
-                    <td>
-                        <label for="input1" class="control-label role">Role</label>
-                        <label>
-                            <input type="radio" name="type" id="optionsRadios1" value="student" checked> Student
-                        </label> 
-                        <label>
-                            <input type="radio" name="type" id="optionsRadios1" value="teacher"> Teacher
-                        </label> 
-                        <label>
-                            <input type="radio" name="type" id="optionsRadios1" value="admin"> Admin
-                        </label>
-                    </td>
-               
-
                 </tr>
  
                 <tr>
                     <td>
-                        <input type="submit" onclick="return matchPassword()" name="Register" class="login_btn" value="Submit" />
+                        <input type="submit" onclick="return matchPassword()" name="Register" class="login_btn" value="Add Teacher" />
                     </td>
                     <td>
 
@@ -218,11 +223,9 @@
     </div>
 </div>
 
-
 <!-- JS -->
 <script src="../js/jquery_library.js"></script>
 <script src="../js/bootstrap.js"></script>
-<script src="../js/main.js"></script>
 
 </body>
 </html>

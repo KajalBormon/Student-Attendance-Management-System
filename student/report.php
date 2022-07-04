@@ -33,9 +33,9 @@
                     <span class="sr-only">(current)</span>
                 </li>
             
-                <li class="nav-item">
+               <!--  <li class="nav-item">
                     <a class="nav-link" href="student.php"><i class="fa fa-users"></i> Student</a>
-                </li>
+                </li> -->
                 
                 <li class="nav-item">
                     <a class="nav-link" href="account.php"><i class="fa fa-user"></i> My Account</a>

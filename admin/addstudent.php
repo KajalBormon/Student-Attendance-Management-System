@@ -1,30 +1,24 @@
 <?php
-    include "../connection.php";
+    include '../connection.php';
     if(isset($_POST['Register'])){
-        $fname = mysqli_real_escape_string($conn,$_POST['fname']);
-        $lname = mysqli_real_escape_string($conn,$_POST['lname']);
-        $username = mysqli_real_escape_string($conn,$_POST['username']);
-        $email = mysqli_real_escape_string($conn,$_POST['mail']);
-        $phone = mysqli_real_escape_string($conn,$_POST['phone']);
-        $pass = md5($_POST['psswd2']);
-        $type = mysqli_real_escape_string($conn, $_POST['type']);
+        $sid = $_POST['sid'];
+        $fname = mysqli_real_escape_string($conn, $_POST['fname']);
+        $lname = mysqli_real_escape_string($conn, $_POST['lname']);
+        $dept = mysqli_real_escape_string($conn, $_POST['dept']);
+        $mail = mysqli_real_escape_string($conn, $_POST['mail']);
+        $batch =$_POST['batch'];
+        $phone = $_POST['phone'];
 
-        $query = "SELECT * FROM admin WHERE username='{$username}'";
-        $result = mysqli_query($conn,$query);
-        if(mysqli_num_rows($result)>0){
-            $err = "<font color='red'>Username Already Exists..!</font>";
+        $sql = "INSERT INTO students(sid,fname,lname,dept,mail,batch,phone) VALUES({$sid},'{$fname}','{$lname}','{$dept}','{$mail}',{$batch},{$phone})";
+        if(mysqli_query($conn,$sql)){
+            $err = "<font color='green'>Add Student Successfully</font>"; 
         }else{
-            $signup_insert = "INSERT INTO admin(fname,lname,username,email,phone,password,type) VALUES('{$fname}','{$lname}','{$username}','{$email}','{$phone}','{$pass}','{$type}')";
-
-            $signup_query = mysqli_query($conn, $signup_insert) or die("Error: ".mysqli_error($conn));
-
-            if($signup_query){
-                $err = "<font color='green'>SingUp successfully...!!</font>";
-            }
-        } 
+            $err = "<font color='red'>Invalid student information...!</font>";
+        }
     }
 
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -41,6 +35,7 @@
     <link rel="stylesheet" href="../css/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="../css/fontawesome/css/all.css">
     <!-- Custom CSS -->
+    <!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
     <link rel="stylesheet" href="../css/singup.css">
 
 </head>
@@ -90,13 +85,27 @@
     </div>
 </nav>
 
+
 <div class="container">
-<div class=" mcontainer">
+    <div class=" mcontainer">
         <form name="register" method="post" class="myform" action="" enctype="multipart/form-data">
-            <h1 class="tit mb-5">Sign Up</h1>
-            <?php echo @$err; ?>
+            <h1 class="tit mb-5">Add Student</h1>
+            <p align='center'><b><?php echo @$err; ?></b></p> 
             <hr class="mhr" color="black" height="15px" />
             <table width="100%">
+                <tr>
+                    <td>
+                        <label class="label required">Student ID</label>
+                    </td>
+
+                    <td>
+
+                    </td>
+
+                    <td class="td1">
+                        <input type="number" autocomplete="off" name="sid" placeholder="Student ID" class="required" required />
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <label class="label required">First Name</label>
@@ -126,13 +135,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <label class="label required">Username</label>
+                        <label class="label required">Department</label>
                     </td>
                     <td>
 
                     </td>
                     <td class="td1">
-                        <input type="text" name="username" autocomplete="off" placeholder="Username" required />
+                        <input type="text" name="dept" autocomplete="off" placeholder="Department" required />
                     </td>
                 </tr>
 
@@ -144,67 +153,37 @@
 
                     </td>
                     <td class="td1">
-                        <input type="email" name="mail" autocomplete="off" placeholder="student.csejkkniu@gmail.com" required />
+                        <input type="email" name="mail" autocomplete="off" placeholder="csejkkniu@gmail.com" required />
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <label>Phone</label>
+                        <label>Batch</label>
                     </td>
                     <td>
 
                     </td>
                     <td class="td1">
-                        <input type="phone" autocomplete="off" name="phone" id="phone" placeholder="01700112233" />
+                        <input type="number" autocomplete="off" name="batch" id="phone" placeholder="Continue Batch" />
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <label class="label required">Password</label>
+                        <label class="label required">Phone</label>
                     </td>
                     <td>
 
                     </td>
                     <td class="td1" class="label required">
-                        <input type="password" name="psswd" id="pass1" placeholder="Password" required />
+                        <input type="text" name="phone" id="sem" placeholder="Phone Number" required />
                     </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label class="label required">Confirm Password</label>
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="td1" class="label required">
-                        <input type="password" name="psswd2" id="pass2" placeholder="Confirm Password" required />
-                        <span id="mgs" style="color: red;"></span>
-                    </td>
-                </tr>
-                <tr class="rolefont">
-
-                    <td>
-                        <label for="input1" class="control-label role">Role</label>
-                        <label>
-                            <input type="radio" name="type" id="optionsRadios1" value="student" checked> Student
-                        </label> 
-                        <label>
-                            <input type="radio" name="type" id="optionsRadios1" value="teacher"> Teacher
-                        </label> 
-                        <label>
-                            <input type="radio" name="type" id="optionsRadios1" value="admin"> Admin
-                        </label>
-                    </td>
-               
-
                 </tr>
  
                 <tr>
                     <td>
-                        <input type="submit" onclick="return matchPassword()" name="Register" class="login_btn" value="Submit" />
+                        <input type="submit" onclick="return matchPassword()" name="Register" class="login_btn" value="Add Student" />
                     </td>
                     <td>
 
@@ -218,11 +197,9 @@
     </div>
 </div>
 
-
 <!-- JS -->
 <script src="../js/jquery_library.js"></script>
 <script src="../js/bootstrap.js"></script>
-<script src="../js/main.js"></script>
 
 </body>
 </html>

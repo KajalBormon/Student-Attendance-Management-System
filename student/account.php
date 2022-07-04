@@ -1,3 +1,25 @@
+<?php 
+    include '../connection.php';
+    if(isset($_POST['done'])){
+        $s_id = $_POST['id'];
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
+        $dept = $_POST['department'];
+        $batch = $_POST['batch'];
+        $phone = $_POST['phone'];
+        $mail = $_POST['mail'];
+
+        $update_sql = "UPDATE students SET fname='{$fname}',lname='{$lname}',dept='{$dept}',batch='{$batch}',phone='{$phone}',mail='{$mail}' WHERE sid=$s_id";
+
+        $update_res = mysqli_query($conn, $update_sql);
+        if($update_res){
+            $err = "<font color='green'>Updated Successfully</font>"; 
+        }else{
+            $err = "<font color='red'>Updated Unsuccessfully</font>"; 
+        }
+    } 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,9 +55,9 @@
                     <span class="sr-only">(current)</span>
                 </li>
             
-                <li class="nav-item">
+             <!--    <li class="nav-item">
                     <a class="nav-link" href="student.php"><i class="fa fa-users"></i> Student</a>
-                </li>
+                </li> -->
                 
                 <li class="nav-item">
                     <a class="nav-link" href="account.php"><i class="fa fa-user"></i> My Account</a>
@@ -58,6 +80,7 @@
 <div class="row">
     <div class="content" id="content2">
         <h3>Update Account</h3>
+        <?php echo @$err; ?>
         <br>
         <form method="post" action="" class="form-horizontal col-md-6 col-md-offset-3 selectform">
 
@@ -72,7 +95,7 @@
                         </td>
                         <td>
                             <div class="changeplaceholder">
-                                <input type="number" name="sr_id"  class="form-control" id="input1" placeholder="Enter Your Id" />
+                                <input type="number" name="sr_id" id="input1" placeholder="Enter Your Id" />
                             </div> 
                         </td>
                     </tr>
@@ -83,42 +106,63 @@
             
         </form>
         <br>
-
+        <?php
+            if(isset($_POST['sr_btn'])){
+                $id = $_POST['sr_id'];
+                $sql = "SELECT * FROM students WHERE sid = $id";
+                $fetch_sql = mysqli_query($conn, $sql);
+                if(mysqli_num_rows($fetch_sql)>0){
+                    while($row = mysqli_fetch_assoc($fetch_sql)){
+            
+        ?>
         <form method="post" action="" class="form-horizontal col-md-6 col-md-offset-3">
-            <table class="table table-striped">
+            <table class="table table-striped changes1">
                 <tbody>
                 <tr>
                     <td> <strong> Student ID: </strong></td>
-                    <td><input type="number" name="s_id" id="" value="18102014"></td>
+                    <td><input type="number" name="s_id" id="" value="<?php echo $row['sid']; ?>"></td>
                 </tr>
 
                 <tr>
-                    <td> <strong> Student Name: </strong></td>
-                    <td><input type="text" name="name" id="" value="Kajal Bormon"></td>
+                    <td> <strong> Student Firstname: </strong></td>
+                    <td style="text-transform: capitalize;"><input type="text" name="fname" id="" value="<?php echo $row['fname'];?>"></td>
+                </tr>
+                <tr>
+                    <td> <strong> Student Lastname: </strong></td>
+                    <td style="text-transform: capitalize;"><input type="text" name="lname" id="" value="<?php echo $row['lname']; ?>"></td>
                 </tr>
                 
                 <tr>
                     <td><strong>Department: </strong></td>
-                    <td><input type="text" name="department" id="" value="CSE"></td>
+                    <td style="text-transform: uppercase;"><input type="text" name="department" id="" value="<?php echo $row['dept']; ?>"></td>
                 </tr>
                 
                 <tr>
                     <td><strong>Batch: </strong></td>
-                    <td><input type="number" name="batch" id="" value="12"></td>
+                    <td><input type="number" name="batch" id="" value="<?php echo $row['batch']; ?>"></td>
                 </tr> 
                 <tr>
-                    <td><strong>Semester: </strong></td>
-                    <td><input type="number" name="sem" id="" value="7"> </td>
+                    <td><strong>Phone: </strong></td>
+                    <td><input type="number" name="phone" id="" value="<?php echo $row['phone']; ?>"> </td>
                 </tr>
 
                 <tr>
                     <td><strong>Email: </strong></td>
-                    <td><input type="email" name="mail" id="" value="kajalbormon40@gmail.com"> </td>
+                    <td><input type="email" name="mail" id="" value="<?php echo $row['mail']; ?>"> </td>
+                </tr>
+                <input style="display: none;" type="hidden" name="id" value="<?php echo $id; ?>">
+          
+                <tr><td></td></tr>
+                <tr>
+                        <td></td>
+                        <td><input type="submit" value="Update" name="done" /></td>
+                        
                 </tr>
 
                 </tbody>
             </table>
         </form>
+        <?php } } } ?>
     </div>
 
 </div>

@@ -32,18 +32,23 @@
                     <a class="nav-link" href="Index.php"><i class="fa fa-home"></i> Home</a>
                     <span class="sr-only">(current)</span>
                 </li>
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="teacher.php"><i class="fa fa-industry"></i> Faculties</a>
+                    <a class="nav-link" href="addteacher.php"><i class="fa fa-plus"></i> Add Info</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="teacher.php"><i class="fa fa-user"></i> My Report</a>
                 </li>
                 
                 <li class="nav-item">
                     <a class="nav-link" href="attendance.php"><i class="fa fa-check"></i> Attendance</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="report.php"><i class="fa fa-file"></i> Report</a>
+                    <a class="nav-link" href="report.php"><i class="fa fa-file"></i> Student Report</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
+                    <a class="nav-link" href="../logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
                 </li>
             </ul>
         </div>
@@ -66,12 +71,10 @@
                     <td>
                         <label style="font-size: 20px;" for="input1" class="control-label mr-4">Select Course</label>
                     </td>
-                    <td>
-
-                    </td>
+                    <td></td>
                     <td>
                         <div class="form-group">
-                            <select name="whichcourse" class="form-control select1" id="input1">
+                            <select name="whichcourse" class="select1" id="input1">
                                 <option name="networking" value="networking">Computer Networks</option>
                                 <option name="swe" value="swe">Software Engineering</option>
                             </select>
@@ -80,14 +83,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <label style="font-size: 20px;" for="input1" class="control-label">Your ID</label>
+                        <label style="font-size: 20px;" for="input1" class="control-label">Student ID</label>
                     </td>
                     <td>
 
                     </td>
                     <td>
-                        <div class="changeplaceholder">
-                            <input type="number" name="sr_id"  class="form-control" id="input1" placeholder="Enter Your Id" />
+                        <div class="border">
+                            <input type="number" name="sr_id" id="input1" placeholder="Enter Your Id" />
                         </div> 
                     </td>
                 </tr>
@@ -113,8 +116,8 @@
       </tr>
       
       <tr>
-          <td>Department: </td>
-          <td>CSE</td>
+          <td>Course: </td>
+          <td>Software Engineering</td>
       </tr>
       
       <tr>

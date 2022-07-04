@@ -1,3 +1,20 @@
+<?php 
+    include '../connection.php'; 
+    session_start();
+
+    if(isset($_POST['save'])){
+        $batch1 = $_POST['batch_st'];
+        $course_name = $_POST['course_name_st'];
+
+        echo $batch1;
+        echo $course_name;
+        
+        
+  
+    }
+  
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,23 +44,31 @@
         </button>
         <div class="collapse navbar-collapse mnav" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="student.php"><i class="fa fa-users"></i> Students</a>
                     <span class="sr-only">(current)</span>
-                </li>
-            
+                </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="teacher.php"><i class="fa fa-industry"></i> Faculties</a>
+                    <a class="nav-link" href="Index.php"><i class="fa fa-home"></i> Home</a>
+                    <span class="sr-only">(current)</span>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="attendance"><i class="fa fa-check"></i> Attendance</a>
+                    <a class="nav-link" href="addteacher.php"><i class="fa fa-plus"></i> Add Info</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="teacher.php"><i class="fa fa-user"></i> My Report</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="attendance.php"><i class="fa fa-check"></i> Attendance</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="report.php"><i class="fa fa-file"></i> Report</a>
+                    <a class="nav-link" href="report.php"><i class="fa fa-file"></i> Student Report</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
+                    <a class="nav-link" href="../logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
                 </li>
             </ul>
         </div>
@@ -59,7 +84,7 @@
         <h3>Attendance of <?php echo date('Y-m-d'); ?></h3>
         <br>
 
-        <center><p><?php if(isset($att_msg)) echo $att_msg; if(isset($error_msg)) echo $error_msg; ?></p></center> 
+        <center><p><?php echo @$err; ?></p></center> 
 
         <form action="" method="post" class="form-horizontal col-md-6 col-md-offset-3">
             <div class="form-group" id="showattbtn">
@@ -70,10 +95,18 @@
                         </td>
                         <td></td>
                         <td>
+                  
                             <select name="whichbatch" class="select1" id="input1">
-                                <option name="eight" value="12">12</option>
-                                <option name="seven" value="13">13</option>
+                                <?php
+                                    $sql1 = "SELECT * FROM teacher WHERE username = '{$_SESSION['username']}'";
+                                    $res1 = mysqli_query($conn, $sql1);
+                                    if(mysqli_num_rows($res1)>0){
+                                       while( $row1 = mysqli_fetch_assoc($res1)){   
+                                ?>
+                                <option name="batch_st" value="<?php echo $row1['batch']; ?>"><?php echo $row1['batch']; ?></option>
+                             <?php } }  ?>
                             </select>
+                            
                         </td>
                     </tr>
                     <tr>
@@ -83,12 +116,19 @@
                         <td></td>
                         <td>
                             <select name="whichcourse" class="select1" id="input1">
-                                <option name="networking" value="networking">Computer Networks</option>
-                                <option name="swe" value="swe">Software Engineering</option>
+                                <?php
+                                    $sql1 = "SELECT * FROM teacher WHERE username = '{$_SESSION['username']}'";
+                                    $res1 = mysqli_query($conn, $sql1);
+                                    if(mysqli_num_rows($res1)>0){
+                                       while( $row1 = mysqli_fetch_assoc($res1)){   
+                                ?>
+                                <option name="course_name_st" value="<?php echo $row1['course_name']; ?>"><?php echo $row1['course_name']; ?></option>
+                                <?php } } ?>
                             </select>
                         </td>
                     </tr>
                 </table>
+            
                 <input type="submit" value="Show!" name="batch" />  
             </div> 
                 
@@ -99,41 +139,56 @@
                 <table class="table table-stripped">
                     <thead>
                         <tr>
-                        <th scope="col">ID</th>
+                        <th scope="col">Student ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Department</th>
                         <th scope="col">Batch</th>
-                        <th scope="col">Semester</th>
                         <th scope="col">Email</th>
                         <th scope="col">Status</th>
                         </tr>
                     </thead>
                 
                     <tbody>
-                        <tr>
-                        <td>Student ID</td>
-                        <td>Full Name</td>
-                        <td>Department</td>
-                        <td>Continue Batch</td>
-                        <td>Semester</td>
-                        <td>Email</td>
-                        <td class="radiostatus">
-                            <label>
-                                <input type="radio" name="radio" value="Present"> Present
-                            </label>
-                            <label> 
-                                <input type="radio" name="radio" value="Absent"> Absent
-                            </label>
-                          
+                        <?php
                             
-                        </td>
+                            if(isset($_POST['batch'])){
+
+                            $i=0;
+                            $radio = 0;
+                            $batch = $_POST['whichbatch'];
+                            $sql = "SELECT * FROM students WHERE batch='$batch' ORDER BY sid ASC"; 
+                            $result = mysqli_query($conn, $sql);
+                            if(mysqli_num_rows($result)>0){
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $i++;
+                        ?>
+                        <tr>
+                            <td><?php echo $row['sid']; ?></td><input type="hidden" name="stat_id[]" value="<?php echo $data['st_id']; ?>"> </td>
+                            <td style="text-transform: capitalize;"><?php echo $row['fname'].' '.$row['lname']; ?></td>
+                            <td style="text-transform: uppercase;"><?php echo $row['dept']; ?></td>
+                            <td><?php echo $row['batch']; ?></td>
+                            <td><?php echo $row['mail']; ?></td>
+                            <td class="radiostatus">
+                                <label>
+                                    <input type="radio" name="status[<?php echo $radio; ?>]" value="Present" checked> Present
+                                </label>
+                                <label> 
+                                    <input type="radio" name="status[<?php echo $radio; ?>]" value="Absent"> Absent
+                                </label>    
+                            </td>
                         </tr>
+                        <?php 
+                            $radio++;
+                                } 
+                            } 
+                        }
+                        ?>
                     </tbody>
                 </table>
 
                 <center>
                     <br>
-                <input type="submit" style="width: 10%; margin-left: 70%" value="Save!" name="att" />
+                <input type="submit" style="width: 10%; margin-left: 70%" value="Save!" name="save" />
                 </center>
 
             </form>

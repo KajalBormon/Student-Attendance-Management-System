@@ -3,6 +3,7 @@
     if(isset($_POST['Register'])){
         $fname = mysqli_real_escape_string($conn, $_POST['fname']);
         $lname = mysqli_real_escape_string($conn, $_POST['lname']);
+        $username = mysqli_real_escape_string($conn, $_POST['username']);
         $dept = mysqli_real_escape_string($conn, $_POST['dept']);
         $mail = mysqli_real_escape_string($conn, $_POST['mail']);
         $batch = $_POST['batch'];
@@ -10,11 +11,11 @@
         $course_name = mysqli_real_escape_string($conn, $_POST['course']);
         $course_code = mysqli_real_escape_string($conn, $_POST['code']);
 
-        $sql = "INSERT INTO teacher(fname,lname,dept,mail,batch,sem,course_name,course_code) VALUES('{$fname}','{$lname}','{$dept}','{$mail}',{$batch},{$sem},'{$course_name}','{$course_code}')";
+        $sql = "INSERT INTO teacher(fname,lname,username,dept,mail,batch,sem,course_name,course_code) VALUES('{$fname}','{$lname}','{$username}','{$dept}','{$mail}',{$batch},{$sem},'{$course_name}','{$course_code}')";
         if(mysqli_query($conn,$sql)){
-            $err = "<font color='green'>Add Student Successfully</font>"; 
+            $err = "<font color='green'>Add Teacher Successfully</font>"; 
         }else{
-            $err = "<font color='red'>Invalid student information...!</font>";
+            $err = "<font color='red'>Invalid Teacher information...!</font>";
         }
     }
 
@@ -62,11 +63,24 @@
                 </li>
             
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php"><i class="fa fa-plus"></i> Add Student</a>
+                    <a class="nav-link" href="addteacher.php"><i class="fa fa-plus"></i> Add Teacher</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="addstudent.php"><i class="fa fa-plus"></i> Add Student</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="teacherlist.php"><i class="fa fa-users"></i> Teacher List</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="studentlist.php"><i class="fa fa-users"></i> Student List</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="../logout"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
+                    <a class="nav-link" href="../logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a>
                 </li>
             </ul>
         </div>
@@ -107,6 +121,21 @@
                         <input type="text" name="lname" autocomplete="off" placeholder="Last Name" required />
                     </td>
                 </tr>
+
+                <tr>
+                    <td>
+                        <label class="label required">username</label>
+                    </td>
+
+                    <td>
+
+                    </td>
+
+                    <td class="td1">
+                        <input type="text" name="username" autocomplete="off" placeholder="Username" required />
+                    </td>
+                </tr>
+
                 <tr>
                     <td>
                         <label class="label required">Department</label>
