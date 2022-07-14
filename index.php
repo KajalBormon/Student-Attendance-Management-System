@@ -1,6 +1,6 @@
 <?php
-    include 'connection.php';
-    session_start();    
+    include 'connection.php';  
+    session_start();
     if(isset($_POST['Login'])){
         $username = mysqli_real_escape_string($conn,$_POST['username']);
         $pass = md5($_POST['Password']);

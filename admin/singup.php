@@ -1,5 +1,9 @@
 <?php
     include "../connection.php";
+    session_start();
+    if(!isset($_SESSION['username'])){
+        header("location:http://localhost/studentAMS/index.php");
+    }
     if(isset($_POST['Register'])){
         $fname = mysqli_real_escape_string($conn,$_POST['fname']);
         $lname = mysqli_real_escape_string($conn,$_POST['lname']);

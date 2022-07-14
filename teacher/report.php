@@ -1,6 +1,9 @@
 <?php
     include '../connection.php';
     session_start();
+    if(!isset($_SESSION['username'])){
+        header("location:http://localhost/studentAMS/index.php");
+    }
 
 ?>
 
@@ -82,7 +85,7 @@
                         <div class="form-group">
                             <select name="whichcourse" class="select1" id="input1">
                                 <?php
-                                    $sql1 = "SELECT * FROM teacher WHERE username = '{$_SESSION['username']}'";
+                                    $sql1 = "SELECT course_name FROM teacher WHERE username = '{$_SESSION['username']}'";
                                     $res1 = mysqli_query($conn, $sql1);
                                     if(mysqli_num_rows($res1)>0){
                                        while( $row1 = mysqli_fetch_assoc($res1)){   

@@ -1,5 +1,9 @@
 <?php 
     include '../connection.php';
+    session_start();
+    if(!isset($_SESSION['username'])){
+        header("location:http://localhost/studentAMS/index.php");
+    }
     if(isset($_POST['done'])){
         $s_id = $_POST['id'];
         $fname = $_POST['fname'];
@@ -109,7 +113,7 @@
         <?php
             if(isset($_POST['sr_btn'])){
                 $id = $_POST['sr_id'];
-                $sql = "SELECT * FROM students WHERE sid = $id";
+                $sql = "SELECT students.sid,students.fname,students.lname,students.dept,students.mail,students.batch,students.phone,admin.username FROM students JOIN admin WHERE sid = $id AND username='{$_SESSION['username']}'";
                 $fetch_sql = mysqli_query($conn, $sql);
                 if(mysqli_num_rows($fetch_sql)>0){
                     while($row = mysqli_fetch_assoc($fetch_sql)){

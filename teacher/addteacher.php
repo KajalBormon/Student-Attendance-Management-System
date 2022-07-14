@@ -1,5 +1,9 @@
 <?php
     include '../connection.php';
+    session_start();
+    if(!isset($_SESSION['username'])){
+        header("location:http://localhost/studentAMS/index.php");
+    }
     if(isset($_POST['Register'])){
         $fname = mysqli_real_escape_string($conn, $_POST['fname']);
         $lname = mysqli_real_escape_string($conn, $_POST['lname']);
@@ -11,12 +15,19 @@
         $course_name = mysqli_real_escape_string($conn, $_POST['course']);
         $course_code = mysqli_real_escape_string($conn, $_POST['code']);
 
-        $sql = "INSERT INTO teacher(fname,lname,username,dept,mail,batch,sem,course_name,course_code) VALUES('{$fname}','{$lname}','{$username}','{$dept}','{$mail}',{$batch},{$sem},'{$course_name}','{$course_code}')";
-        if(mysqli_query($conn,$sql)){
-            $err = "<font color='green'>Add Teacher Successfully</font>"; 
+        $select_query = "SELECT * FROM teacher WHERE username='{$username}'";
+        if(mysqli_query($conn, $select_query)){
+            $err = "<font color='red'>Username already Exist...!</font>";
         }else{
-            $err = "<font color='red'>Invalid Teacher information...!</font>";
+            $sql = "INSERT INTO teacher(fname,lname,username,dept,mail,batch,sem,course_name,course_code) VALUES('{$fname}','{$lname}','{$username}','{$dept}','{$mail}',{$batch},{$sem},'{$course_name}','{$course_code}')";
+            if(mysqli_query($conn,$sql)){
+                $err = "<font color='green'>Add Teacher Successfully</font>"; 
+            }else{
+                $err = "<font color='red'>Invalid Teacher information...!</font>";
+            }
         }
+
+       
     }
 
 ?>
@@ -169,7 +180,7 @@
 
                     </td>
                     <td class="td1">
-                        <input type="number" autocomplete="off" name="batch" id="phone" placeholder="Continue Batch" />
+                        <input type="number" autocomplete="off" name="batch" id="phone" placeholder="Which Batch" />
                     </td>
                 </tr>
                 <tr>
