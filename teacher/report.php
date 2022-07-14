@@ -71,6 +71,7 @@
 <div class="row">
   <div class="content" id="content2">
     <h3>Student Report</h3>
+   
     <br>
     <form method="post" action="" class="form-horizontal col-md-6 col-md-offset-3 selectform">
 
@@ -126,6 +127,7 @@
             $sql = "SELECT * FROM attendance WHERE sid={$id} AND course_name='{$course}'";
             $res = mysqli_query($conn, $sql);
             $count_total = mysqli_num_rows($res);
+            if($count_total>0){
             $count_pre = 0;
             $i = 0;
             while($row = mysqli_fetch_array($res)){
@@ -211,9 +213,15 @@
       </tr>
 
     </tbody>
-    <?Php } ?>
+    <?Php 
+        }else{
+                $err = "<font color='red'>NO Found Data. Please contact with the admin.....!</font>"; 
+            } 
+    }?>
+
     </table>
   </form>
+  <h3><?php echo @$err; ?></h3>
   </div>
 
 </div>

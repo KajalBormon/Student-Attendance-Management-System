@@ -65,6 +65,7 @@
 <div class="row">
   <div class="content" id="content2">
     <h3>Student Report</h3>
+    
     <br>
     <form method="post" action="" class="form-horizontal col-md-6 col-md-offset-3 selectform">
 
@@ -122,14 +123,45 @@
             $sql = "SELECT * FROM attendance WHERE sid={$id} AND course_name='{$course}'";
             $res = mysqli_query($conn, $sql);
             $count_total = mysqli_num_rows($res);
-            $count_pre = 0;
-            $i = 0;
-            while($row = mysqli_fetch_array($res)){
-            $i++;
-            if($row['status']=='Present'){
-                $count_pre++;
-            }
-            if($i<=1){
+            if($count_total>0){
+                $count_pre = 0;
+                $i = 0;
+                while($row = mysqli_fetch_array($res)){
+                $i++;
+                if($row['status']=='Present'){
+                    $count_pre++;
+                }
+                $percentage = ($count_pre/$count_total)*100;
+                if($percentage>=90 && $percentage<100){
+                    $mark = 10;
+                }
+                else if($percentage>=85 && $percentage<90){
+                    $mark = 9;
+                }
+                else if($percentage>=80 && $percentage<85){
+                    $mark = 8;
+                }
+                else if($percentage>=75 && $percentage<80){
+                    $mark = 7;
+                }
+                else if($percentage>=70 && $percentage<75){
+                    $mark = 6;
+                }
+                else if($percentage>=65 && $percentage<70){
+                    $mark = 5;
+                }
+                else if($percentage>=60 && $percentage<65){
+                    $mark = 4;
+                }
+                else if($percentage>=55 && $percentage<60){
+                    $mark = 3;
+                }
+                else if($percentage>=50 && $percentage<55){
+                    $mark = 2;
+                }else{
+                    $mark = 0;
+                }
+                if($i<=1){
     ?>
     <tbody>
       <tr>
@@ -166,11 +198,25 @@
         <td>Absent (Days): </td>
         <td> <?php echo $count_total - $count_pre; ?> </td>
       </tr>
-
+      <tr>
+        <td>Percentage: </td>
+        <td> <?php echo $percentage;?>% </td>
+      </tr>
+      <tr>
+        <td>Marks: </td>
+        <td> <?php echo $mark;?> </td>
+      </tr>
     </tbody>
-    <?php } ?>
+    <?php 
+            }
+            else{
+                $err = "<font color='red'>NO Found Data. Please contact with the admin.....!</font>";  
+            }  
+        }
+    ?>
     </table>
   </form>
+  <h3><?php echo @$err; ?></h3>
   </div>
 
 </div>
