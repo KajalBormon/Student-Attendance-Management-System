@@ -1,19 +1,29 @@
 <?php 
     include '../connection.php'; 
     session_start();
-
-    if(isset($_POST['save'])){
-        $batch1 = $_POST['batch_st'];
-        $course_name = $_POST['course_name_st'];
-
-        echo $batch1;
-        echo $course_name;
-        
-        
   
+    if(isset($_POST['save'])){
+        foreach ($_POST['status'] as $i=> $st_status) {
+            
+            $stat_id = $_POST['stat_id'][$i];
+            $count_batch = $_POST['stat_batch'][$i];
+            $name = $_POST['name_stu'][$i];
+            $course = $_POST['stat_course'];
+            $dp = date('Y-m-d');
+        
+        
+            $stat_sql = "INSERT INTO attendance(sid,name,course_name,batch,status,date) VALUES('$stat_id','{$name}','$course','$count_batch','$st_status','$dp')";
+
+            if(mysqli_query($conn, $stat_sql)){
+                $err = "<font color='green'>Attendance Recorded Successfully</font>"; 
+            }else{
+                $err = "<font color='green'>Don't Attendance Record Successfully</font>"; 
+            }
+    
+        }
+    
     }
   
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,9 +113,11 @@
                                     if(mysqli_num_rows($res1)>0){
                                        while( $row1 = mysqli_fetch_assoc($res1)){   
                                 ?>
-                                <option name="batch_st" value="<?php echo $row1['batch']; ?>"><?php echo $row1['batch']; ?></option>
-                             <?php } }  ?>
+                                <option><?php echo $row1['batch']; ?></option>
+                                
+                               <?php } } ?>
                             </select>
+                            
                             
                         </td>
                     </tr>
@@ -122,7 +134,7 @@
                                     if(mysqli_num_rows($res1)>0){
                                        while( $row1 = mysqli_fetch_assoc($res1)){   
                                 ?>
-                                <option name="course_name_st" value="<?php echo $row1['course_name']; ?>"><?php echo $row1['course_name']; ?></option>
+                                <option><?php echo $row1['course_name']; ?></option>
                                 <?php } } ?>
                             </select>
                         </td>
@@ -156,6 +168,8 @@
                             $i=0;
                             $radio = 0;
                             $batch = $_POST['whichbatch'];
+                            $course = $_POST['whichcourse'];
+                    
                             $sql = "SELECT * FROM students WHERE batch='$batch' ORDER BY sid ASC"; 
                             $result = mysqli_query($conn, $sql);
                             if(mysqli_num_rows($result)>0){
@@ -163,11 +177,12 @@
                                     $i++;
                         ?>
                         <tr>
-                            <td><?php echo $row['sid']; ?></td><input type="hidden" name="stat_id[]" value="<?php echo $data['st_id']; ?>"> </td>
-                            <td style="text-transform: capitalize;"><?php echo $row['fname'].' '.$row['lname']; ?></td>
+                            <td><?php echo $row['sid']; ?><input type="hidden" name="stat_id[]" value="<?php echo $row['sid']; ?>"> </td>
+                            <td style="text-transform: capitalize;"><?php echo $row['fname'].' '.$row['lname']; ?><input type="hidden" name="name_stu[]" value="<?php echo $row['fname'].' '.$row['lname']; ?>"></td>
                             <td style="text-transform: uppercase;"><?php echo $row['dept']; ?></td>
-                            <td><?php echo $row['batch']; ?></td>
+                            <td><?php echo $row['batch']; ?><input type="hidden" name="stat_batch[]" value="<?php echo $row['batch']; ?>"></td>
                             <td><?php echo $row['mail']; ?></td>
+                           
                             <td class="radiostatus">
                                 <label>
                                     <input type="radio" name="status[<?php echo $radio; ?>]" value="Present" checked> Present
@@ -183,6 +198,7 @@
                             } 
                         }
                         ?>
+                         <td><input type="hidden" name="stat_course" value="<?php echo $course; ?>"></td>
                     </tbody>
                 </table>
 
@@ -197,6 +213,7 @@
     </div>
 
     </center>
+
 
 <!-- JS -->
 <script src="../js/jquery_library.js"></script>

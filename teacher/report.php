@@ -1,3 +1,9 @@
+<?php
+    include '../connection.php';
+    session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,8 +81,14 @@
                     <td>
                         <div class="form-group">
                             <select name="whichcourse" class="select1" id="input1">
-                                <option name="networking" value="networking">Computer Networks</option>
-                                <option name="swe" value="swe">Software Engineering</option>
+                                <?php
+                                    $sql1 = "SELECT * FROM teacher WHERE username = '{$_SESSION['username']}'";
+                                    $res1 = mysqli_query($conn, $sql1);
+                                    if(mysqli_num_rows($res1)>0){
+                                       while( $row1 = mysqli_fetch_assoc($res1)){   
+                                ?>
+                                    <option><?php echo $row1['course_name']; ?></option>
+                                <?php } } ?>
                             </select>
                         </div>
                     </td>
@@ -89,7 +101,7 @@
 
                     </td>
                     <td>
-                        <div class="border">
+                        <div>
                             <input type="number" name="sr_id" id="input1" placeholder="Enter Your Id" />
                         </div> 
                     </td>
@@ -104,42 +116,60 @@
 
     <form method="post" action="" class="form-horizontal col-md-6 col-md-offset-3">
     <table class="table table-striped">
+    <?php
+        if(isset($_POST['sr_btn'])){
+            $course = $_POST['whichcourse'];
+            $id = $_POST['sr_id'];
+            $sql = "SELECT * FROM attendance WHERE sid={$id} AND course_name='{$course}'";
+            $res = mysqli_query($conn, $sql);
+            $count_total = mysqli_num_rows($res);
+            $count_pre = 0;
+            $i = 0;
+            while($row = mysqli_fetch_array($res)){
+            $i++;
+            if($row['status']=='Present'){
+                $count_pre++;
+            }
+            if($i<=1){
+    ?>
      <tbody>
       <tr>
           <td>Student ID: </td>
-          <td>18102014</td>
+          <td><?php echo $row['sid']; ?></td>
       </tr>
 
       <tr>
           <td>Student Name: </td>
-          <td>Kajal Bormon</td>
+          <td><?php echo $row['name']; ?></td>
       </tr>
       
       <tr>
           <td>Course: </td>
-          <td>Software Engineering</td>
+          <td><?php echo $row['course_name']; ?></td>
       </tr>
       
       <tr>
           <td>Batch: </td>
-          <td>12</td>
+          <td><?php echo $row['batch']; ?></td>
       </tr> 
+      <?php } }?>
       <tr>
         <td>Total Class (Days): </td>
-        <td>32 </td>
+        <td><?php echo $count_total; ?> </td>
       </tr>
 
       <tr>
         <td>Present (Days): </td>
-        <td>10 </td>
+        <td><?php echo $count_pre; ?> </td>
       </tr>
 
       <tr>
         <td>Absent (Days): </td>
-        <td>20 </td>
+        <td> <?php echo $count_total - $count_pre; ?> </td>
       </tr>
 
     </tbody>
+    <?Php } ?>
     </table>
   </form>
   </div>

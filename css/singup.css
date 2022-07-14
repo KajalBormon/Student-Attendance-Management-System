@@ -50,7 +50,7 @@ label {
     margin: 1%;
     width: 100%;
     text-align: left;
-    font-size: 25px;
+    font-size: 18px;
     font-weight: bold;
     font-family: 'PT Serif';
 }
@@ -124,7 +124,7 @@ input[type=date] {
     width: 100%;
     margin: 1%;
     height: 40px;
-    font-size: 20px;
+    font-size: 18px;
     font-family: 'Acme';
     box-sizing: border-box;
     border: 2px solid black;
@@ -233,7 +233,7 @@ input[type=password] {
 ::placeholder {
     text-align: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px;
     justify-content: center;
     color: rgb(116, 115, 115);
     outline: none;
@@ -353,7 +353,7 @@ hr {
 
 .content h3 {
     color: red;
-    font-size: 40px;
+    font-size: 30px;
     font-family: "PT Serif";
 }
 
