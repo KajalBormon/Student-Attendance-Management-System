@@ -133,6 +133,37 @@
             if($row['status']=='Present'){
                 $count_pre++;
             }
+            $percentage = ($count_pre/$count_total)*100;
+            if($percentage>=90 && $percentage<100){
+                $mark = 10;
+            }
+            else if($percentage>=85 && $percentage<90){
+                $mark = 9;
+            }
+            else if($percentage>=80 && $percentage<85){
+                $mark = 8;
+            }
+            else if($percentage>=75 && $percentage<80){
+                $mark = 7;
+            }
+            else if($percentage>=70 && $percentage<75){
+                $mark = 6;
+            }
+            else if($percentage>=65 && $percentage<70){
+                $mark = 5;
+            }
+            else if($percentage>=60 && $percentage<65){
+                $mark = 4;
+            }
+            else if($percentage>=55 && $percentage<60){
+                $mark = 3;
+            }
+            else if($percentage>=50 && $percentage<55){
+                $mark = 2;
+            }else{
+                $mark = 0;
+            }
+
             if($i<=1){
     ?>
      <tbody>
@@ -169,6 +200,14 @@
       <tr>
         <td>Absent (Days): </td>
         <td> <?php echo $count_total - $count_pre; ?> </td>
+      </tr>
+      <tr>
+        <td>Percentage: </td>
+        <td> <?php echo $percentage;?>% </td>
+      </tr>
+      <tr>
+        <td>Marks: </td>
+        <td> <?php echo $mark;?> </td>
       </tr>
 
     </tbody>
